@@ -1,6 +1,6 @@
 import tools
 import json
-from utils import completionscall, weather, loadtools, retrieve_images
+from utils import completionscall, weather, loadtools, retrieve_links
 
 def main():
     ## Create a tool, register the tool and add it to the fun catalog
@@ -14,7 +14,7 @@ def main():
     ## This is a manual step to add the function to the function catalog as it is necessary to implement this in utils.py
     ## this has atmost significance since the catalog look up value should be of type function
     ## to make the generic calls
-    funccatalog = {"weather": weather,"retrieve_images": retrieve_images}
+    funccatalog = {"weather": weather,"retrieve_links": retrieve_links}
 
     ## Create a starter message and call the loadtools function
 
@@ -25,7 +25,7 @@ def main():
         },
         {
             "role": "user",
-            "content": "Retrieve a set of images using provided image search and retrieval for me and my wife seperately for the current weather in Frisco, Texas"
+            "content": "Retrieve a set of url links depending on the current weather in Frisco, Texas"
         }
     ]
 
@@ -47,7 +47,6 @@ def main():
                 print(type(funcargs))
                 print(funcargs['location'])
                 print(funcargs['unit'])
-
                 funcresponse = funcname(location=funcargs['location'], unit=funcargs['unit'])
                 messages.append(
                             {
@@ -57,7 +56,14 @@ def main():
                                 "content": funcresponse["content"],
                             }
                         )
-            elif tool.function.name == "retrieve_images":
+                
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": "Summarize the final output as a comma seperated list of fashion accessories. limit the list to 3"
+                    }
+                )
+            elif tool.function.name == "retrieve_links":
                 funcname = funccatalog[tool.function.name]
                 funcargs = json.loads(tool.function.arguments)
                 print(funcargs)
@@ -68,7 +74,7 @@ def main():
                 print(type(funcargs))
                 print(funcargs['query'])
                 print(funcargs['attr_filter'])
-                funcresponse = funcname(query=funcargs['query'], attrfilter=funcargs['attr_filter'])
+                funcresponse = funcname(query=funcargs['query'])
                 messages.append(
                             {
                                 "tool_call_id": functoolid,

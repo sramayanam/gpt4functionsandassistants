@@ -5,8 +5,22 @@ import json
 
 config_params = config.ConfigParameters()
 
-def retrieve_images(query, attrfilter):
-    pass
+
+def retrieve_links(query) -> list:
+    headers = {"Ocp-Apim-Subscription-Key": config_params.bing_search_subscription_key}
+    params = {"q": query, "textDecorations": False}
+    response = requests.get(config_params.bing_search_url, headers=headers, params=params)
+    response.raise_for_status()
+    search_results = response.json()
+    output = []
+
+    for result in search_results["webPages"]["value"]:
+         output.append(result["url"])
+#        output.append({"title": result["name"], "link": result["url"], "snippet": result["snippet"]})
+
+#    return json.dumps(output)
+    return output   
+    
 
 def loadtools(tools,initprompt,tool_choice = "auto"):
     endpoint_url = config_params.endpoint_url

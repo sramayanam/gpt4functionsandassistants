@@ -23,18 +23,14 @@ class tools:
         {   
                 "type": "function",
                  "function": {                   
-                    "name": "retrieve_images",
-                    "description": "Search and Retrieve images of clothes from the Azure AI Search index",
+                    "name": "retrieve_links",
+                    "description": "Search and Retrieve links of apparel websites from the Azure AI Search index",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "query": {
                                 "type": "string",
-                                "description": "The query string to search for attire",
-                            },
-                            "attr_filter": {
-                                "type": "string",
-                                "description": "The odata filter to apply for the fashion attributes field. Only actual ingredient names should be used in this filter. If you're not sure something is a fashion item, don't include this filter. Example: fashionelements/any(i: i eq 'shoe' or i eq 'pants')",
+                                "description": "The query string to search the appropriate attire",
                             }
                         },
                         "required": ["query"]
